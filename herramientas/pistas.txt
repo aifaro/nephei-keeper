@@ -1,0 +1,97 @@
+# escena|nivel|título en incompetech
+investigacion|0|Penumbra
+investigacion|0|Echoes of Time v2
+investigacion|0|Ossuary 1 - A Beginning
+investigacion|0|Ossuary 5 - Rest
+investigacion|0|Long Note Three
+investigacion|1|Lightless Dawn
+investigacion|1|Ossuary 2 - Turn
+investigacion|1|Unnatural Situation
+investigacion|1|Static Motion
+investigacion|1|Spellbound
+investigacion|2|Ossuary 3 - Words
+investigacion|2|Ossuary 6 - Air
+investigacion|2|Phantasm
+investigacion|2|Spider Eyes
+investigacion|2|Crypto
+investigacion|3|Enter the Maze
+investigacion|3|I Can Feel it Coming
+investigacion|3|Darkening Developments
+investigacion|3|Ossuary 7 - Resolve
+investigacion|3|Half Mystery
+mitos|0|Deep Noise
+mitos|0|Very Low Note
+mitos|0|The Dread
+mitos|0|Inner Sanctum
+mitos|1|Heart of the Beast
+mitos|1|Right Behind You
+mitos|1|The Voices
+mitos|1|Bent and Broken
+mitos|2|Land of the Dead
+mitos|2|Gathering Darkness
+mitos|2|Shadowlands 6 - The Pit
+mitos|2|Giant Wyrm
+mitos|3|Unlight
+mitos|3|Shadowlands 3 - Machine
+mitos|3|Shadowlands 7 - Codex
+mitos|3|Unseen Horrors
+accion|0|Constance
+accion|0|Impending Boom
+accion|0|Drums of the Deep
+accion|0|Death and Axes
+accion|1|Stormfront
+accion|1|Hand Balance Redux
+accion|1|Medusa
+accion|1|Curse of the Scarab
+accion|2|Hitman
+accion|2|Undaunted
+accion|2|The Descent
+accion|2|Urban Gauntlet
+accion|3|Volatile Reaction
+accion|3|Killers
+accion|3|Harmful or Fatal
+accion|3|Private Eye
+persecucion|0|Chase Pulse
+persecucion|0|Basement Floor
+persecucion|0|Gothamlicious
+persecucion|0|Twisted
+persecucion|1|Chase Pulse Faster
+persecucion|1|The Way Out
+persecucion|1|Exit the Premises
+persecucion|1|Ossuary 4 - Animate
+persecucion|2|Mistake the Getaway
+persecucion|2|Movement Proposition
+persecucion|2|Malicious
+persecucion|2|Prelude and Action
+persecucion|3|Chase
+persecucion|3|Darkling
+persecucion|3|Nerves
+persecucion|3|Clenched Teeth
+respiro|0|Comfortable Mystery
+respiro|0|Pensif
+respiro|0|On the Passing of Time
+respiro|0|Disquiet
+respiro|1|Despair and Triumph
+respiro|1|Teller of the Tales
+respiro|1|Memory Lane
+respiro|1|Classic Horror 1
+respiro|2|Cryptic Sorrow
+respiro|2|Wounded
+respiro|2|Plaint
+respiro|2|Darkest Child
+respiro|3|Dark Times
+respiro|3|Loss
+respiro|3|Mourning Song
+respiro|3|Funeral March for Brass
+gramofono|-|Maple Leaf Rag
+gramofono|-|The Entertainer
+gramofono|-|Fig Leaf Rag
+gramofono|-|Hot Swing
+gramofono|-|Gaslamp Funworks
+gramofono|-|Tango de Manzana
+gramofono|-|Night on the Docks - Sax
+gramofono|-|Gymnopedie No 1
+gramofono|-|Danse Macabre
+gramofono|-|Hall of the Mountain King
+gramofono|-|Ibn Al-Noor
+gramofono|-|Desert City

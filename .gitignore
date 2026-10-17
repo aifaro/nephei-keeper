@@ -1,0 +1,4 @@
+node_modules/
+.wrangler/
+herramientas/bajada.log
+public/musica/*.orig.mp3
