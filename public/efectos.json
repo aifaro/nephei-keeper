@@ -1,0 +1,606 @@
+{
+ "susto": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/susto-0.mp3",
+    "d": 7.38,
+    "credito": {
+     "titulo": "Jumpscare",
+     "autor": "qubodup",
+     "url": "https://freesound.org/s/814050/"
+    }
+   },
+   {
+    "f": "efectos/susto-1.mp3",
+    "d": 3.52,
+    "credito": {
+     "titulo": "Shock Stab 12",
+     "autor": "nomiqbomi",
+     "url": "https://freesound.org/s/578382/"
+    }
+   },
+   {
+    "f": "efectos/susto-2.mp3",
+    "d": 7.44,
+    "credito": {
+     "titulo": "Stingers and Stabs 004",
+     "autor": "OverlookHotelRecords",
+     "url": "https://freesound.org/s/840810/"
+    }
+   }
+  ]
+ },
+ "impacto": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/impacto-0.mp3",
+    "d": 6.33,
+    "credito": {
+     "titulo": "Cinematic Trailer Hit Explosion CC0.mp3",
+     "autor": "Wakerone",
+     "url": "https://freesound.org/s/513110/"
+    }
+   },
+   {
+    "f": "efectos/impacto-1.mp3",
+    "d": 3.19,
+    "credito": {
+     "titulo": "Deep Boom",
+     "autor": "Za-Games",
+     "url": "https://freesound.org/s/539968/"
+    }
+   }
+  ]
+ },
+ "crescendo": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/crescendo-0.mp3",
+    "d": 9.03,
+    "credito": {
+     "titulo": "Riser Suspense",
+     "autor": "9voltplasma",
+     "url": "https://freesound.org/s/721435/"
+    }
+   },
+   {
+    "f": "efectos/crescendo-1.mp3",
+    "d": 2.88,
+    "credito": {
+     "titulo": "dark riser buildup",
+     "autor": "CogFireStudios",
+     "url": "https://freesound.org/s/683667/"
+    }
+   }
+  ]
+ },
+ "grito": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/grito-0.mp3",
+    "d": 3.83,
+    "credito": {
+     "titulo": "Scream Of A Woman",
+     "autor": "synth2",
+     "url": "https://freesound.org/s/721498/"
+    }
+   },
+   {
+    "f": "efectos/grito-1.mp3",
+    "d": 2.04,
+    "credito": {
+     "titulo": "woman scream.wav",
+     "autor": "starnezio",
+     "url": "https://freesound.org/s/609973/"
+    }
+   }
+  ]
+ },
+ "susurros": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/susurros-0.mp3",
+    "d": 12.0,
+    "credito": {
+     "titulo": "Ghostly Whispers",
+     "autor": "dimbark1",
+     "url": "https://freesound.org/s/316797/"
+    }
+   },
+   {
+    "f": "efectos/susurros-1.mp3",
+    "d": 9.48,
+    "credito": {
+     "titulo": "whispers-supernatural.mp3",
+     "autor": "gjgaura",
+     "url": "https://freesound.org/s/466658/"
+    }
+   }
+  ]
+ },
+ "aullido": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/aullido-0.mp3",
+    "d": 7.12,
+    "credito": {
+     "titulo": "Wolf howl",
+     "autor": "NaturesTemper",
+     "url": "https://freesound.org/s/398430/"
+    }
+   },
+   {
+    "f": "efectos/aullido-1.mp3",
+    "d": 7.16,
+    "credito": {
+     "titulo": "Scary Ghost Wolf Howling.wav",
+     "autor": "BrainClaim",
+     "url": "https://freesound.org/s/267179/"
+    }
+   }
+  ]
+ },
+ "disparo": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/disparo-0.mp3",
+    "d": 2.14,
+    "credito": {
+     "titulo": "Single Pistol Gunshot 3.wav",
+     "autor": "morganpurkis",
+     "url": "https://freesound.org/s/385811/"
+    }
+   },
+   {
+    "f": "efectos/disparo-1.mp3",
+    "d": 2.44,
+    "credito": {
+     "titulo": "Single Pistol Gunshot 3.3.wav",
+     "autor": "morganpurkis",
+     "url": "https://freesound.org/s/392229/"
+    }
+   },
+   {
+    "f": "efectos/disparo-2.mp3",
+    "d": 2.47,
+    "credito": {
+     "titulo": "Single Pistol Gunshot 4.wav",
+     "autor": "morganpurkis",
+     "url": "https://freesound.org/s/391328/"
+    }
+   },
+   {
+    "f": "efectos/disparo-3.mp3",
+    "d": 1.8,
+    "credito": {
+     "titulo": "Small pistol gunshot indoors",
+     "autor": "acidsnowflake",
+     "url": "https://freesound.org/s/402789/"
+    }
+   }
+  ]
+ },
+ "rafaga": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/rafaga-0.mp3",
+    "d": 5.97,
+    "credito": {
+     "titulo": "S31-16 Tommy gun busts; machine gun.wav",
+     "autor": "craigsmith",
+     "url": "https://freesound.org/s/675603/"
+    }
+   }
+  ]
+ },
+ "explosion": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/explosion-0.mp3",
+    "d": 5.32,
+    "credito": {
+     "titulo": "Grenade Explosion SFX (medium-sized, meaty, realistic)",
+     "autor": "unfa",
+     "url": "https://freesound.org/s/609587/"
+    }
+   },
+   {
+    "f": "efectos/explosion-1.mp3",
+    "d": 4.79,
+    "credito": {
+     "titulo": "Explosion.mp3",
+     "autor": "florianreichelt",
+     "url": "https://freesound.org/s/563010/"
+    }
+   }
+  ]
+ },
+ "amartillar": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/amartillar-0.mp3",
+    "d": 1.85,
+    "credito": {
+     "titulo": "Revolver Cocking.wav",
+     "autor": "ajoyce86",
+     "url": "https://freesound.org/s/240698/"
+    }
+   }
+  ]
+ },
+ "cristales": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/cristales-0.mp3",
+    "d": 1.58,
+    "credito": {
+     "titulo": "Glass Break",
+     "autor": "unfa",
+     "url": "https://freesound.org/s/221528/"
+    }
+   },
+   {
+    "f": "efectos/cristales-1.mp3",
+    "d": 3.99,
+    "credito": {
+     "titulo": "break-window.mp3",
+     "autor": "Kneeling",
+     "url": "https://freesound.org/s/448004/"
+    }
+   }
+  ]
+ },
+ "portazo": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/portazo-0.mp3",
+    "d": 1.54,
+    "credito": {
+     "titulo": "Door slamming hard",
+     "autor": "NachtmahrTV",
+     "url": "https://freesound.org/s/571797/"
+    }
+   },
+   {
+    "f": "efectos/portazo-1.mp3",
+    "d": 3.75,
+    "credito": {
+     "titulo": "Angry Door - Wooden Entrance Open Close Slam Hard A.wav",
+     "autor": "hisoul",
+     "url": "https://freesound.org/s/462665/"
+    }
+   }
+  ]
+ },
+ "crujido": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/crujido-0.mp3",
+    "d": 3.84,
+    "credito": {
+     "titulo": "Heavy Door Creaking_05.wav",
+     "autor": "rambler52",
+     "url": "https://freesound.org/s/455324/"
+    }
+   },
+   {
+    "f": "efectos/crujido-1.mp3",
+    "d": 3.66,
+    "credito": {
+     "titulo": "Opening a creaking door",
+     "autor": "Ryding",
+     "url": "https://freesound.org/s/125957/"
+    }
+   }
+  ]
+ },
+ "llaman": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/llaman-0.mp3",
+    "d": 6.01,
+    "credito": {
+     "titulo": "Knock on Door 2",
+     "autor": "NachtmahrTV",
+     "url": "https://freesound.org/s/571671/"
+    }
+   },
+   {
+    "f": "efectos/llaman-1.mp3",
+    "d": 1.82,
+    "credito": {
+     "titulo": "door_knock.wav",
+     "autor": "wjtaylor",
+     "url": "https://freesound.org/s/268500/"
+    }
+   }
+  ]
+ },
+ "pasos": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/pasos-0.mp3",
+    "d": 11.46,
+    "credito": {
+     "titulo": "Footsteps_Boots_Wood_Mono.wav",
+     "autor": "Nox_Sound",
+     "url": "https://freesound.org/s/533044/"
+    }
+   },
+   {
+    "f": "efectos/pasos-1.mp3",
+    "d": 10.0,
+    "credito": {
+     "titulo": "Footsteps indoors wood floor.wav",
+     "autor": "jedg",
+     "url": "https://freesound.org/s/505832/"
+    }
+   }
+  ]
+ },
+ "trueno": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/trueno-0.mp3",
+    "d": 12.0,
+    "credito": {
+     "titulo": "Thunderclap",
+     "autor": "Fission9",
+     "url": "https://freesound.org/s/534023/"
+    }
+   },
+   {
+    "f": "efectos/trueno-1.mp3",
+    "d": 12.0,
+    "credito": {
+     "titulo": "Thunder Clap",
+     "autor": "DaniloSFX",
+     "url": "https://freesound.org/s/672776/"
+    }
+   },
+   {
+    "f": "efectos/trueno-2.mp3",
+    "d": 12.0,
+    "credito": {
+     "titulo": "Thunder Clap 4",
+     "autor": "jzielke011",
+     "url": "https://freesound.org/s/338088/"
+    }
+   }
+  ]
+ },
+ "campanada": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/campanada-0.mp3",
+    "d": 4.41,
+    "credito": {
+     "titulo": "BELL.wav",
+     "autor": "kgeshev",
+     "url": "https://freesound.org/s/378799/"
+    }
+   },
+   {
+    "f": "efectos/campanada-1.mp3",
+    "d": 6.23,
+    "credito": {
+     "titulo": "enkhuizen catholic church.wav",
+     "autor": "odilonmarcenaro",
+     "url": "https://freesound.org/s/120833/"
+    }
+   }
+  ]
+ },
+ "sirena": {
+  "tipo": "golpe",
+  "tomas": [
+   {
+    "f": "efectos/sirena-0.mp3",
+    "d": 6.04,
+    "credito": {
+     "titulo": "Ship Horn - Fog Horn - Cruise Ship Grand Princess",
+     "autor": "coalcon",
+     "url": "https://freesound.org/s/636075/"
+    }
+   },
+   {
+    "f": "efectos/sirena-1.mp3",
+    "d": 5.3,
+    "credito": {
+     "titulo": "Staten Island Ferry Horn.mp3",
+     "autor": "nathanvladimirovich",
+     "url": "https://freesound.org/s/261846/"
+    }
+   }
+  ]
+ },
+ "lluvia": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/lluvia-0.mp3",
+    "d": 64.03,
+    "credito": {
+     "titulo": "rain against window 2",
+     "autor": "bastipictures",
+     "url": "https://freesound.org/s/243781/"
+    }
+   }
+  ]
+ },
+ "tormenta": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/tormenta-0.mp3",
+    "d": 79.41,
+    "credito": {
+     "titulo": "Thunderstorm with heavy rain1.wav",
+     "autor": "Audeption",
+     "url": "https://freesound.org/s/425174/"
+    }
+   }
+  ]
+ },
+ "viento": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/viento-0.mp3",
+    "d": 90.0,
+    "credito": {
+     "titulo": "AMB_Wind_Howling_empty Church close to window_48kHz.wav",
+     "autor": "Tonmeister88",
+     "url": "https://freesound.org/s/557380/"
+    }
+   }
+  ]
+ },
+ "puerto": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/puerto-0.mp3",
+    "d": 90.0,
+    "credito": {
+     "titulo": "Light waves hitting harbour wall at Hamburg Fischmarkt",
+     "autor": "Pfannkuchn",
+     "url": "https://freesound.org/s/342876/"
+    }
+   }
+  ]
+ },
+ "olas": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/olas-0.mp3",
+    "d": 90.0,
+    "credito": {
+     "titulo": "Waves_Crashing_Rocks_IT.wav",
+     "autor": "uniuniversal",
+     "url": "https://freesound.org/s/620213/"
+    }
+   }
+  ]
+ },
+ "chimenea": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/chimenea-0.mp3",
+    "d": 90.0,
+    "credito": {
+     "titulo": "Fireplace crackling wood little flame.wav",
+     "autor": "BonnyOrbit",
+     "url": "https://freesound.org/s/484338/"
+    }
+   }
+  ]
+ },
+ "noche": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/noche-0.mp3",
+    "d": 90.0,
+    "credito": {
+     "titulo": "Crickets At Night - Raw sound",
+     "autor": "Defelozedd94",
+     "url": "https://freesound.org/s/522299/"
+    }
+   }
+  ]
+ },
+ "taberna": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/taberna-0.mp3",
+    "d": 64.93,
+    "credito": {
+     "titulo": "background_chatter_tavern.wav",
+     "autor": "dazzamoo",
+     "url": "https://freesound.org/s/651364/"
+    }
+   }
+  ]
+ },
+ "barco": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/barco-0.mp3",
+    "d": 71.56,
+    "credito": {
+     "titulo": "R28-03-Large Wood Ship Creaking.wav",
+     "autor": "craigsmith",
+     "url": "https://freesound.org/s/483355/"
+    }
+   }
+  ]
+ },
+ "presencia": {
+  "tipo": "ambiente",
+  "tomas": [
+   {
+    "f": "efectos/presencia-0.mp3",
+    "d": 90.0,
+    "credito": {
+     "titulo": "Void Monolith Subharmonic Drone by Mantice",
+     "autor": "bassimat",
+     "url": "https://freesound.org/s/854874/"
+    }
+   }
+  ]
+ },
+ "reloj": {
+  "tipo": "pulso",
+  "tomas": [
+   {
+    "f": "efectos/reloj-0.mp3",
+    "d": 40.5,
+    "bucle": 40.004,
+    "periodo": 1.0,
+    "credito": {
+     "titulo": "1min Clock Ticking - CC0",
+     "autor": "bulkmoerls",
+     "url": "https://freesound.org/s/813355/"
+    }
+   }
+  ]
+ },
+ "latido": {
+  "tipo": "pulso",
+  "tomas": [
+   {
+    "f": "efectos/latido-0.mp3",
+    "d": 26.02,
+    "bucle": 25.5172,
+    "periodo": 1.501,
+    "credito": {
+     "titulo": "heartbeat-80bpm.wav",
+     "autor": "loudernoises",
+     "url": "https://freesound.org/s/332820/"
+    }
+   }
+  ]
+ }
+}

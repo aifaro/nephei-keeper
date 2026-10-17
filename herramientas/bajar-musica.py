@@ -1,5 +1,6 @@
-"""Baja de incompetech.com las pistas de pistas.txt, las recomprime a MP3 de 96 kbps
-y escribe public/pistas.json con título, duración y escena de cada una.
+"""Baja de incompetech.com las pistas de pistas.txt tal cual (MP3 de 320 kbps; solo se les
+quitan las etiquetas y la carátula, sin recomprimir) y escribe public/pistas.json con
+título, duración y escena de cada una.
 
     python herramientas/bajar-musica.py
 
@@ -37,7 +38,7 @@ for linea in (RAIZ / "herramientas" / "pistas.txt").read_text(encoding="utf-8").
         print("bajando", titulo, flush=True)
         subprocess.run(["curl", "-sSfL", "-o", str(bruto), ORIGEN + urllib.parse.quote(titulo) + ".mp3"], check=True)
         subprocess.run([FFMPEG, "-v", "error", "-y", "-i", str(bruto), "-map_metadata", "-1",
-                        "-codec:a", "libmp3lame", "-b:a", "96k", str(final)], check=True)
+                        "-map", "0:a", "-c", "copy", str(final)], check=True)
         bruto.unlink()
     pistas[clave] = {"t": titulo, "a": "Kevin MacLeod", "d": duracion(final)}
     destino = escenas.setdefault(escena, [] if nivel == "-" else [[], [], [], []])

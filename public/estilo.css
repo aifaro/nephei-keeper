@@ -96,7 +96,18 @@ h1{margin:0;font:700 clamp(1.9rem,4.2vw,3rem)/1.05 var(--titulo);letter-spacing:
   background:var(--rojo);box-shadow:0 0 6px rgba(196,71,47,.8);
   transition:left 1.2s cubic-bezier(.5,0,.2,1);
 }
-.dial-texto{display:flex;align-items:baseline;gap:.6rem;margin-top:.7rem;min-height:1.6rem;flex-wrap:wrap}
+.dial-pie{display:flex;align-items:center;gap:1rem;margin-top:.7rem}
+.dial-texto{display:flex;align-items:baseline;gap:.6rem;min-height:1.6rem;flex-wrap:wrap;flex:1;min-width:0}
+.saltos{display:flex;gap:.4rem;flex:none}
+.salto{
+  width:2.4rem;height:2.4rem;border-radius:50%;display:grid;place-items:center;padding:0;
+  border:1px solid #000;background:radial-gradient(circle at 35% 30%,#4a3d2c,#1a140e 72%);
+  box-shadow:0 0 0 2px #3a3122,0 3px 6px rgba(0,0,0,.6);color:var(--laton-claro);
+}
+.salto svg{width:1rem;height:1rem;fill:currentColor;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.salto:hover:not(:disabled){color:#fff1c4;box-shadow:0 0 0 2px var(--laton),0 3px 6px rgba(0,0,0,.6)}
+.salto:active:not(:disabled){transform:translateY(1px)}
+.salto:disabled{opacity:.35;cursor:default}
 .dial-texto strong{font:700 .95rem/1.2 var(--etiqueta);letter-spacing:.12em;text-transform:uppercase;color:var(--laton-claro)}
 .dial-texto span:last-child{font:1rem/1.3 var(--maquina);color:var(--texto)}
 .piloto{width:.6rem;height:.6rem;border-radius:50%;background:#3a2a1f;align-self:center;flex:none}
@@ -135,9 +146,7 @@ input[type=range]{accent-color:var(--laton);width:7.5rem}
   min-width:0;
 }
 .bloque-escenas{grid-column:1 / -1}
-.bloque-ambiente{grid-column:span 7}
-.bloque-golpes{grid-column:span 5}
-.bloque-gramofono,.bloque-dados{grid-column:1 / -1}
+.bloque-golpes,.bloque-ambiente,.bloque-gramofono,.bloque-dados{grid-column:1 / -1}
 
 .bloque-cabeza{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem 1.2rem;margin-bottom:.9rem}
 .bloque-cabeza h2{
@@ -176,16 +185,41 @@ input[type=range]{accent-color:var(--laton);width:7.5rem}
 .escena.pausada{border-color:#6b5a2a}
 .escena.pausada .escena-estado::before{content:"❚❚ "}
 
-.niveles{display:grid;border-top:1px solid var(--borde)}
-.niveles button{
-  display:flex;align-items:center;gap:.5rem;padding:.42rem .95rem;border:0;border-top:1px solid var(--borde-suave);
-  background:none;text-align:left;font:500 .92rem/1.2 var(--sans);color:var(--tenue);
+/* La perilla de intensidad: baquelita con muescas de latón */
+.intensidad{display:grid;grid-template-columns:auto 1fr;gap:.2rem .9rem;align-items:center;padding:.9rem .95rem 1rem;border-top:1px solid var(--borde)}
+.perilla{
+  --giro:-135deg;position:relative;width:4.6rem;height:4.6rem;border-radius:50%;cursor:grab;touch-action:none;
+  background:radial-gradient(circle,#0c0a07 0 58%,transparent 59%);
 }
-.niveles button:first-child{border-top:0}
-.niveles button:hover{color:var(--texto);background:rgba(255,255,255,.025)}
-.niveles button[aria-checked=true]{color:var(--texto);background:var(--laton-tenue)}
-.niveles button[aria-checked=true] .lampara{background:var(--laton-claro);box-shadow:0 0 8px var(--laton)}
-.escena.activa .niveles button[aria-checked=true] .lampara{background:#ffd76a;box-shadow:0 0 10px #f4c430}
+.perilla.agarrada{cursor:grabbing}
+.perilla:focus-visible{outline-offset:4px;border-radius:50%}
+.muesca{
+  position:absolute;left:50%;top:50%;width:.36rem;height:.36rem;margin:-.18rem;border-radius:50%;
+  background:#4a3f2e;transform:rotate(var(--a)) translateY(-2.15rem);transition:background .3s,box-shadow .3s;
+}
+.muesca.encendida{background:var(--laton-claro);box-shadow:0 0 6px var(--laton)}
+.escena.activa .muesca.encendida{background:#ffd76a;box-shadow:0 0 9px #f4c430}
+.pomo{
+  position:absolute;inset:.62rem;border-radius:50%;
+  background:
+    radial-gradient(circle at 36% 30%,rgba(255,240,200,.18),transparent 45%),
+    radial-gradient(circle,#2c241a 0 52%,transparent 53%),
+    repeating-conic-gradient(#1a140e 0 6deg,#3a2f22 6deg 12deg);
+  box-shadow:0 0 0 1px #000,0 4px 10px rgba(0,0,0,.7),inset 0 -2px 4px rgba(0,0,0,.6);
+  transform:rotate(var(--giro));transition:transform .35s cubic-bezier(.3,1.4,.5,1);
+}
+.indicador{position:absolute;left:50%;top:.32rem;width:.2rem;height:1.05rem;margin-left:-.1rem;border-radius:.1rem;background:var(--laton-claro);box-shadow:0 0 4px rgba(232,199,102,.6)}
+.perilla:hover .pomo{box-shadow:0 0 0 1px var(--laton),0 4px 10px rgba(0,0,0,.7),inset 0 -2px 4px rgba(0,0,0,.6)}
+.leyenda{list-style:none;margin:0;padding:0;display:grid;gap:.05rem;min-width:0}
+.leyenda button{
+  display:flex;align-items:baseline;gap:.45rem;width:100%;padding:.12rem .3rem;border:0;border-radius:4px;background:none;
+  text-align:left;font:500 .9rem/1.2 var(--sans);color:var(--apagado);
+}
+.leyenda .num{flex:none;width:1.4rem;font:700 .66rem/1 var(--etiqueta);letter-spacing:.08em;color:#5c5240}
+.leyenda button:hover{color:var(--texto)}
+.leyenda button[aria-current=true]{color:var(--texto);background:var(--laton-tenue)}
+.leyenda button[aria-current=true] .num{color:var(--laton-claro)}
+.escena.activa .leyenda button[aria-current=true]{color:#fff1c4}
 
 /* Gramófono */
 .gramofono{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:1rem;align-items:start}
@@ -213,7 +247,7 @@ input[type=range]{accent-color:var(--laton);width:7.5rem}
 .disco.girando .disco-genero{color:var(--laton-claro)}
 
 /* Ambiente */
-.ambientes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.ambientes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem}
 .ambiente{display:grid;gap:.35rem;padding:.55rem .7rem .6rem;border-radius:8px;border:1px solid var(--borde-suave);background:rgba(0,0,0,.18)}
 .ambiente-boton{display:flex;gap:.6rem;align-items:center;text-align:left;border:0;background:none;padding:0}
 .ambiente-boton b{display:block;font:600 1.02rem/1.2 var(--cuerpo)}
@@ -224,9 +258,11 @@ input[type=range]{accent-color:var(--laton);width:7.5rem}
 .ambiente.encendido small{color:var(--tenue)}
 
 /* Golpes */
-.golpes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.grupos-golpes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.grupo-golpes h3{margin:0 0 .5rem;font:700 .78rem/1 var(--etiqueta);letter-spacing:.16em;text-transform:uppercase;color:var(--laton)}
+.golpes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
 .golpe{
-  position:relative;display:grid;gap:.2rem;align-content:start;text-align:left;min-height:5.2rem;
+  position:relative;display:grid;gap:.2rem;align-content:start;text-align:left;min-height:4.4rem;
   padding:.65rem .7rem;border-radius:8px;border:1px solid var(--borde);
   background:linear-gradient(180deg,#2c241a,#1b1610);box-shadow:0 2px 0 #000;
 }
@@ -236,6 +272,7 @@ input[type=range]{accent-color:var(--laton);width:7.5rem}
 .golpe:hover{border-color:var(--laton)}
 .golpe:active{transform:translateY(1px);box-shadow:0 1px 0 #000}
 .golpe.disparado{animation:destello .7s ease-out}
+.golpe.sonando{border-color:var(--laton);box-shadow:0 0 0 1px var(--laton),0 2px 0 #000}
 @keyframes destello{from{background:linear-gradient(180deg,#a8862a,#5a4518);border-color:var(--laton-claro)}}
 
 /* Tiradas */
@@ -292,8 +329,9 @@ dialog .cerrar{margin-top:1.2rem}
 /* ---------- Pantallas estrechas ---------- */
 @media (max-width:1100px){
   .escenas{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .bloque-ambiente,.bloque-golpes{grid-column:1 / -1}
-  .golpes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grupos-golpes{grid-template-columns:1fr}
+  .golpes{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .ambientes{grid-template-columns:repeat(3,minmax(0,1fr))}
   .dados{grid-template-columns:repeat(3,minmax(0,1fr))}
   .historial{grid-column:1 / -1}
 }
@@ -301,13 +339,15 @@ dialog .cerrar{margin-top:1.2rem}
   .cabecera{grid-template-columns:1fr}
   .escenas{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dados{grid-template-columns:1fr}
-  .golpes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .golpes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ambientes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .dial-escala{font-size:.5rem;letter-spacing:.06em}
   .creditos{columns:1}
   kbd{display:none}
 }
 @media (max-width:480px){
   .escenas,.ambientes{grid-template-columns:1fr}
+  .golpes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .escena-sub{min-height:0}
   .gramofono{grid-template-columns:1fr}
   .plato{display:none}

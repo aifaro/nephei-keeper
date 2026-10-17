@@ -6,12 +6,12 @@
    escenas ─┐
    gramófono ┼─ maestro ─ compresor ─ altavoces
    ambiente ─┤
-   golpes ───┘ (y la reverb, que reciben los golpes) */
+   golpes ───┘ */
 
 const ESCENAS = {
   investigacion: { nombre: "Investigación", sub: "La cama de fondo. Déjala sonar toda la sesión.", niveles: ["Calma", "Algo no encaja", "Inquietud", "El cerco se cierra"], nivel: 0.75 },
   mitos: { nombre: "Lo innombrable", sub: "El contacto con lo que no debería existir.", niveles: ["Extrañeza", "Presencia", "Manifestación", "Ruptura"], nivel: 0.85 },
-  accion: { nombre: "Combate", sub: "Puños, pistolas y dinamita.", niveles: ["Tensión", "Refriega", "Tiroteo", "A la desesperada"], nivel: 0.9 },
+  accion: { nombre: "Combate", sub: "Puños, pistolas y dinamita.", niveles: ["Tensión", "Refriega", "Tiroteo", "Sin salida"], nivel: 0.9 },
   persecucion: { nombre: "Persecución", sub: "Huir, o ser quien caza.", niveles: ["Escabullirse", "Os siguen", "Ganan terreno", "En los talones"], nivel: 0.9 },
   respiro: { nombre: "Respiro", sub: "Pausas, curas y lo que queda después.", niveles: ["Calma", "Recuerdo", "Pesar", "Duelo"], nivel: 0.7 },
 };
@@ -31,8 +31,10 @@ const DISCOS = {
   "desert-city": ["Desert City", "Norte de África"],
 };
 
-const TECLAS_GOLPES = ["q", "w", "e", "r", "t", "y"];
+// Una fila del teclado por grupo de golpes.
+const TECLAS_GOLPES = ["qwerty", "asdfgh", "zxcvbn"];
 const FUNDIDO = 3; // segundos al cambiar de escena o de nivel
+const ANGULOS = [-135, -45, 45, 135]; // posiciones de la perilla
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -60,6 +62,7 @@ const estado = {
   inicio: null,
 };
 const listas = {};
+const teclaGolpe = {}; // tecla -> golpe
 
 /* ---------- arranque del audio ---------- */
 
@@ -85,13 +88,7 @@ function arrancarAudio() {
     ambiente: bus(guardado.vAmbiente ?? 0.7),
     golpes: bus(guardado.vGolpes ?? 0.9),
   };
-  const reverb = ctx.createConvolver();
-  reverb.normalize = true;
-  reverb.connect(buses.golpes);
-  buses.reverb = ctx.createGain();
-  buses.reverb.connect(reverb);
-  Sintes.iniciar(ctx, buses);
-  reverb.buffer = Sintes.respuestaReverb();
+  Efectos.iniciar(ctx, buses);
   estado.inicio = Date.now();
   return ctx.resume();
 }
@@ -158,8 +155,9 @@ function guardarPosicion() {
   estado.posiciones[r.lugar] = { i: r.indice, t: r.audio.currentTime };
 }
 
-// Pone a sonar la escena y el nivel indicados con un fundido cruzado.
-function sonar(escena, nivel, segundos = FUNDIDO) {
+// Pone a sonar la escena y el nivel indicados con un fundido cruzado. Con `pista`,
+// salta a esa posición de la lista en vez de seguir donde se dejó.
+function sonar(escena, nivel, segundos = FUNDIDO, pista = null) {
   guardarPosicion();
   const anterior = mezcla.actual;
   if (anterior) {
@@ -167,7 +165,7 @@ function sonar(escena, nivel, segundos = FUNDIDO) {
     setTimeout(() => mezcla.libres.push(anterior), segundos * 1000 + 200);
   }
   const lugar = `${escena}/${nivel}`;
-  const pos = estado.posiciones[lugar] || { i: 0, t: 0 };
+  const pos = pista === null ? estado.posiciones[lugar] || { i: 0, t: 0 } : { i: pista, t: 0 };
   const r = reproductorLibre();
   r.despertar();
   r.lugar = lugar;
@@ -191,9 +189,20 @@ function siguiente(r) {
   pintar();
 }
 
+// Pasar de pista dentro de la escena y el nivel que suenan.
+// Hacia atrás, si la pista lleva más de 5 s, vuelve a su principio.
+function saltar(paso) {
+  const r = mezcla.actual;
+  if (!r || !estado.escena || estado.pausada) return;
+  const nivel = estado.niveles[estado.escena];
+  const l = lista(estado.escena, nivel);
+  const destino = paso < 0 && r.audio.currentTime > 5 ? r.indice : (r.indice + paso + l.length) % l.length;
+  sonar(estado.escena, nivel, 1, destino);
+}
+
 // El nivel también empuja un poco el volumen: de -20 % abajo a +20 % arriba.
 function volumenEscena(escena, nivel) {
-  return ESCENAS[escena].nivel * (0.8 + nivel * 0.4 / 3);
+  return ESCENAS[escena].nivel * (0.8 + (nivel * 0.4) / 3);
 }
 
 function pulsarEscena(escena) {
@@ -259,9 +268,8 @@ function montarPlato() {
   entrada.connect(plato.limpio).connect(plato.salida);
   plato.ruido = ctx.createGain();
   plato.ruido.connect(plato.salida);
-  Sintes.crujido(plato.ruido);
+  Efectos.crujido(plato.ruido);
   plato.salida.connect(buses.gramofono);
-  plato.r.audio.loop = false;
   plato.r.audio.onended = () => pararDisco(0.5);
   aplicarBocina();
 }
@@ -302,11 +310,15 @@ function pararDisco(segundos = 1.2) {
 
 /* ---------- todo fuera ---------- */
 
+function apagarAmbientes(segundos) {
+  Object.keys(Efectos.encendidos).forEach((k) => Efectos.apagarAmbiente(k, segundos));
+}
+
 function fundirTodo(segundos = 6) {
   if (!ctx) return;
   pausar(segundos);
   pararDisco(segundos);
-  Object.keys(Sintes.encendidos).forEach((k) => Sintes.apagarAmbiente(k, segundos));
+  apagarAmbientes(segundos);
   pintar();
 }
 
@@ -314,7 +326,7 @@ function cortar() {
   if (!ctx) return;
   pausar(0.05);
   pararDisco(0.05);
-  Object.keys(Sintes.encendidos).forEach((k) => Sintes.apagarAmbiente(k, 0.1));
+  apagarAmbientes(0.1);
   pintar();
 }
 
@@ -322,28 +334,86 @@ function cortar() {
 
 const ROMANOS = ["I", "II", "III", "IV", "V"];
 
-function construir() {
-  $("#escenas").innerHTML = Object.entries(ESCENAS)
-    .map(([k, e], i) => `
-      <article class="escena" data-escena="${k}">
-        <button class="escena-boton" data-escena="${k}" aria-pressed="false">
-          <span class="canal">${ROMANOS[i]}</span>
-          <span class="escena-nombre">${e.nombre}</span>
-          <span class="escena-sub">${e.sub}</span>
-          <span class="escena-estado">En espera</span>
-          <kbd>${i + 1}</kbd>
-        </button>
-        <div class="niveles" role="radiogroup" aria-label="Intensidad de ${e.nombre}">
-          ${e.niveles.map((n, j) => `<button role="radio" data-nivel="${j}" aria-checked="false"><span class="lampara"></span>${n}</button>`).join("")}
+function htmlEscena([k, e], i) {
+  const marcas = ANGULOS.map((a, j) => `<span class="muesca" style="--a:${a}deg" data-nivel="${j}"></span>`).join("");
+  return `
+    <article class="escena" data-escena="${k}">
+      <button class="escena-boton" data-escena="${k}" aria-pressed="false">
+        <span class="canal">${ROMANOS[i]}</span>
+        <span class="escena-nombre">${e.nombre}</span>
+        <span class="escena-sub">${e.sub}</span>
+        <span class="escena-estado">En espera</span>
+        <kbd>${i + 1}</kbd>
+      </button>
+      <div class="intensidad">
+        <div class="perilla" role="slider" tabindex="0" aria-label="Intensidad de ${e.nombre}" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0">
+          ${marcas}
+          <span class="pomo"><span class="indicador"></span></span>
         </div>
-      </article>`)
-    .join("");
+        <ol class="leyenda">
+          ${e.niveles.map((n, j) => `<li><button data-nivel="${j}" tabindex="-1"><span class="num">${ROMANOS[j]}</span>${n}</button></li>`).join("")}
+        </ol>
+      </div>
+    </article>`;
+}
+
+// La perilla: se arrastra arriba o abajo, se gira con la rueda o con las flechas,
+// y también se puede pulsar el nombre de cada nivel en la leyenda.
+function activarPerilla(el, escena) {
+  const perilla = $(".perilla", el);
+  let arrastre = null;
+  perilla.addEventListener("pointerdown", (e) => {
+    perilla.setPointerCapture(e.pointerId);
+    arrastre = { y: e.clientY, x: e.clientX, nivel: estado.niveles[escena] };
+    perilla.classList.add("agarrada");
+  });
+  perilla.addEventListener("pointermove", (e) => {
+    if (!arrastre) return;
+    const delta = arrastre.y - e.clientY + (e.clientX - arrastre.x);
+    arrancarAudio();
+    cambiarNivel(escena, arrastre.nivel + Math.round(delta / 28));
+  });
+  const soltar = (e) => {
+    if (!arrastre) return;
+    const quieto = Math.abs(arrastre.y - e.clientY) + Math.abs(e.clientX - arrastre.x) < 4;
+    // Un clic sin arrastrar avanza un nivel, y del último vuelve al primero.
+    if (quieto) {
+      arrancarAudio();
+      cambiarNivel(escena, (estado.niveles[escena] + 1) % 4);
+    }
+    arrastre = null;
+    perilla.classList.remove("agarrada");
+  };
+  perilla.addEventListener("pointerup", soltar);
+  perilla.addEventListener("pointercancel", () => { arrastre = null; perilla.classList.remove("agarrada"); });
+  perilla.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    arrancarAudio();
+    cambiarNivel(escena, estado.niveles[escena] + (e.deltaY < 0 ? 1 : -1));
+  }, { passive: false });
+  perilla.addEventListener("keydown", (e) => {
+    const paso = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key];
+    const fijo = { Home: 0, End: 3 }[e.key];
+    if (paso === undefined && fijo === undefined) return;
+    e.preventDefault();
+    e.stopPropagation();
+    arrancarAudio();
+    cambiarNivel(escena, fijo ?? estado.niveles[escena] + paso);
+  });
+  $$(".leyenda button", el).forEach((b) => b.addEventListener("click", () => {
+    arrancarAudio();
+    cambiarNivel(escena, +b.dataset.nivel);
+  }));
+}
+
+function construir() {
+  $("#escenas").innerHTML = Object.entries(ESCENAS).map(htmlEscena).join("");
 
   $("#discos").innerHTML = Object.entries(DISCOS)
     .map(([k, [t, g]]) => `<li><button class="disco" data-disco="${k}"><span class="etiqueta" aria-hidden="true"></span><span class="disco-titulo">${t}</span><span class="disco-genero">${g}</span></button></li>`)
     .join("");
 
-  $("#ambientes").innerHTML = Object.entries(Sintes.AMBIENTES)
+  $("#ambientes").innerHTML = Object.entries(Efectos.AMBIENTES)
     .map(([k, a]) => `
       <div class="ambiente" data-ambiente="${k}">
         <button class="ambiente-boton" aria-pressed="false"><span class="lampara"></span><span><b>${a.nombre}</b><small>${a.sub}</small></span></button>
@@ -351,16 +421,29 @@ function construir() {
       </div>`)
     .join("");
 
-  $("#golpes").innerHTML = Object.entries(Sintes.GOLPES)
-    .map(([k, g], i) => `<button class="golpe" data-golpe="${k}"><b>${g.nombre}</b><small>${g.sub}</small><kbd>${TECLAS_GOLPES[i].toUpperCase()}</kbd></button>`)
+  $("#golpes").innerHTML = Object.entries(Efectos.GOLPES)
+    .map(([grupo, golpes], fila) => `
+      <div class="grupo-golpes">
+        <h3>${grupo}</h3>
+        <div class="golpes">
+          ${Object.entries(golpes).map(([k, g], i) => {
+            const tecla = TECLAS_GOLPES[fila][i];
+            teclaGolpe[tecla] = k;
+            return `<button class="golpe" data-golpe="${k}"><b>${g.nombre}</b><small>${g.sub}</small><kbd>${tecla.toUpperCase()}</kbd></button>`;
+          }).join("")}
+        </div>
+      </div>`)
     .join("");
 
   // Escenas
   $$(".escena").forEach((el) => {
     const k = el.dataset.escena;
     $(".escena-boton", el).addEventListener("click", () => pulsarEscena(k));
-    $$(".niveles button", el).forEach((b) => b.addEventListener("click", () => cambiarNivel(k, +b.dataset.nivel)));
+    activarPerilla(el, k);
   });
+  $("#anterior").addEventListener("click", () => saltar(-1));
+  $("#siguiente").addEventListener("click", () => saltar(1));
+
   $$(".disco").forEach((b) => b.addEventListener("click", () => ponerDisco(b.dataset.disco)));
   $("#bocina").checked = guardado.bocina !== false;
   $("#bocina").addEventListener("change", (e) => {
@@ -375,18 +458,22 @@ function construir() {
     const rango = $("input", el);
     $("button", el).addEventListener("click", () => {
       arrancarAudio();
-      if (Sintes.encendidos[k]) Sintes.apagarAmbiente(k);
-      else Sintes.ambiente(k, +rango.value);
+      if (Efectos.encendidos[k]) Efectos.apagarAmbiente(k);
+      else Efectos.ambiente(k, +rango.value);
       pintar();
     });
     rango.addEventListener("input", () => {
-      Sintes.nivelAmbiente(k, +rango.value);
+      Efectos.nivelAmbiente(k, +rango.value);
       (guardado.amb ||= {})[k] = +rango.value;
       guardar();
     });
   });
 
   $$(".golpe").forEach((b) => b.addEventListener("click", () => golpe(b.dataset.golpe)));
+  document.addEventListener("golpe-fin", (e) => {
+    const b = $(`.golpe[data-golpe="${e.detail}"]`);
+    if (b && !Efectos.enCurso(e.detail)) b.classList.remove("sonando");
+  });
 
   // Volúmenes
   for (const [id, clave, bus] of [["v-maestro", "maestro"], ["v-musica", "vMusica", "escenas"], ["v-gramofono", "vGramofono", "gramofono"], ["v-ambiente", "vAmbiente", "ambiente"], ["v-golpes", "vGolpes", "golpes"]]) {
@@ -405,24 +492,27 @@ function construir() {
   $("#cortar").addEventListener("click", cortar);
   $("#pantalla").addEventListener("click", pantallaCompleta);
   $("#abrir-manual").addEventListener("click", () => $("#manual").showModal());
-  $("#abrir-creditos").addEventListener("click", () => $("#creditos").showModal());
+  $("#abrir-creditos").addEventListener("click", () => {
+    construirCreditos();
+    $("#creditos").showModal();
+  });
   $$("dialog .cerrar").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
 
   document.addEventListener("keydown", teclado);
   construirDados();
-  construirCreditos();
   setInterval(reloj, 1000);
   reloj();
   pintar();
 }
 
-function golpe(k) {
+async function golpe(k) {
   arrancarAudio();
-  Sintes.GOLPES[k].sonar();
   const b = $(`.golpe[data-golpe="${k}"]`);
   b.classList.remove("disparado");
   void b.offsetWidth;
   b.classList.add("disparado");
+  const empieza = await Efectos.golpe(k);
+  b.classList.toggle("sonando", empieza || Efectos.enCurso(k));
 }
 
 function pantallaCompleta() {
@@ -438,10 +528,11 @@ function teclado(e) {
   else if (k === "arrowup" || k === "arrowdown") {
     const esc = estado.escena || estado.ultima;
     cambiarNivel(esc, estado.niveles[esc] + (k === "arrowup" ? 1 : -1));
-  } else if (TECLAS_GOLPES.includes(k)) golpe(Object.keys(Sintes.GOLPES)[TECLAS_GOLPES.indexOf(k)]);
+  } else if (k === "arrowright") saltar(1);
+  else if (k === "arrowleft") saltar(-1);
+  else if (teclaGolpe[k]) golpe(teclaGolpe[k]);
   else if (k === "escape" && !$("dialog[open]")) fundirTodo();
-  else if (k === "x") cortar();
-  else if (k === "f") pantallaCompleta();
+  else if (k === "backspace") cortar();
   else return;
   e.preventDefault();
 }
@@ -461,16 +552,22 @@ function pintar() {
     const k = el.dataset.escena;
     const activa = estado.escena === k;
     const suena = activa && !estado.pausada;
+    const n = estado.niveles[k];
     el.classList.toggle("activa", suena);
     el.classList.toggle("pausada", activa && estado.pausada);
     $(".escena-boton", el).setAttribute("aria-pressed", suena);
     $(".escena-estado", el).textContent = suena ? "Sonando" : activa ? "En pausa" : "En espera";
-    $$(".niveles button", el).forEach((b, j) => b.setAttribute("aria-checked", j === estado.niveles[k]));
+    const perilla = $(".perilla", el);
+    perilla.style.setProperty("--giro", `${ANGULOS[n]}deg`);
+    perilla.setAttribute("aria-valuenow", n);
+    perilla.setAttribute("aria-valuetext", ESCENAS[k].niveles[n]);
+    $$(".muesca", el).forEach((m, j) => m.classList.toggle("encendida", j === n));
+    $$(".leyenda button", el).forEach((b, j) => b.setAttribute("aria-current", j === n));
   });
   $$(".disco").forEach((b) => b.classList.toggle("girando", b.dataset.disco === estado.plato));
   $(".plato").classList.toggle("girando", !!estado.plato);
   $$(".ambiente").forEach((el) => {
-    const on = !!Sintes.encendidos?.[el.dataset.ambiente];
+    const on = !!Efectos.encendidos[el.dataset.ambiente];
     el.classList.toggle("encendido", on);
     $("button", el).setAttribute("aria-pressed", on);
   });
@@ -479,14 +576,16 @@ function pintar() {
   const dial = $("#dial");
   const sintonizada = estado.escena && !estado.pausada;
   dial.classList.toggle("vivo", sintonizada || !!estado.plato);
+  $("#anterior").disabled = $("#siguiente").disabled = !sintonizada;
   const idx = claves.indexOf(estado.escena ?? estado.ultima);
   dial.style.setProperty("--aguja", `${((idx + 0.5) / claves.length) * 100}%`);
   const r = mezcla.actual;
   const pista = r && biblioteca?.pistas[r.clave];
   if (sintonizada && pista) {
     const e = ESCENAS[estado.escena];
+    const l = lista(estado.escena, estado.niveles[estado.escena]);
     $("#dial-escena").textContent = `${e.nombre} · ${e.niveles[estado.niveles[estado.escena]]}`;
-    $("#dial-pista").textContent = `${pista.t} — ${pista.a}`;
+    $("#dial-pista").textContent = `${pista.t} — ${pista.a} (${r.indice + 1}/${l.length})`;
   } else if (estado.plato) {
     $("#dial-escena").textContent = "Gramófono";
     $("#dial-pista").textContent = `${DISCOS[estado.plato][0]} — ${biblioteca.pistas[estado.plato].a}`;
@@ -554,9 +653,20 @@ function tirarExpresion(texto) {
 
 /* ---------- créditos ---------- */
 
-function construirCreditos() {
-  const usadas = Object.entries(biblioteca.pistas).sort((a, b) => a[1].t.localeCompare(b[1].t));
-  $("#lista-creditos").innerHTML = usadas.map(([, p]) => `<li>«${p.t}», ${p.a}</li>`).join("");
+const NOMBRES_EFECTOS = () => ({ ...Efectos.AMBIENTES, ...Object.assign({}, ...Object.values(Efectos.GOLPES)) });
+
+async function construirCreditos() {
+  const usadas = Object.values(biblioteca.pistas).sort((a, b) => a.t.localeCompare(b.t));
+  $("#lista-creditos").innerHTML = usadas.map((p) => `<li>«${p.t}», ${p.a}</li>`).join("");
+  let efectos = Efectos.creditos();
+  if (!efectos.length) {
+    const indice = await (await fetch("/efectos.json")).json();
+    efectos = Object.entries(indice).flatMap(([clave, e]) => e.tomas.map((t) => ({ clave, ...t.credito })));
+  }
+  const nombres = NOMBRES_EFECTOS();
+  $("#lista-efectos").innerHTML = efectos
+    .map((c) => `<li><b>${nombres[c.clave]?.nombre ?? c.clave}</b>: <a href="${c.url}">«${c.titulo}»</a>, ${c.autor}</li>`)
+    .join("");
 }
 
 /* ---------- inicio ---------- */

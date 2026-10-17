@@ -1,0 +1,33 @@
+# clave|tipo|ids de Freesound (CC0), separados por comas
+# tipo: golpe (suena una vez; cada id es una toma y se elige una al azar),
+#       ambiente (bucle con fundido cruzado) o pulso (bucle cortado a ritmo: reloj, latido)
+susto|golpe|814050,578382,840810
+impacto|golpe|513110,539968
+crescendo|golpe|721435,683667
+grito|golpe|721498,609973
+susurros|golpe|316797,466658
+aullido|golpe|398430,267179
+disparo|golpe|385811,392229,391328,402789
+rafaga|golpe|675603
+explosion|golpe|609587,563010
+amartillar|golpe|240698
+cristales|golpe|221528,448004
+portazo|golpe|571797,462665
+crujido|golpe|455324,125957
+llaman|golpe|571671,268500
+pasos|golpe|533044,505832
+trueno|golpe|534023,672776,338088
+campanada|golpe|378799,120833
+sirena|golpe|636075,261846
+lluvia|ambiente|243781
+tormenta|ambiente|425174
+viento|ambiente|557380
+puerto|ambiente|342876
+olas|ambiente|620213
+chimenea|ambiente|484338
+noche|ambiente|522299
+taberna|ambiente|651364
+barco|ambiente|483355
+presencia|ambiente|854874
+reloj|pulso|813355
+latido|pulso|332820

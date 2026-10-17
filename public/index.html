@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Alegreya+Sans+SC:wght@500;700&family=Alegreya+Sans:wght@400;500;700&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="/estilo.css?v=1">
+<link rel="stylesheet" href="/estilo.css?v=2">
 </head>
 <body>
 <nav class="barra"><a class="marca" href="https://rpg.nephei.org">rpg<span>·</span>nephei</a><a href="https://nephei.org">nephei.org</a></nav>
@@ -27,10 +27,16 @@
       <div class="dial-escala" aria-hidden="true"><span>Investigación</span><span>Innombrable</span><span>Combate</span><span>Persecución</span><span>Respiro</span></div>
       <div class="aguja" aria-hidden="true"></div>
     </div>
-    <div class="dial-texto">
-      <span class="piloto" aria-hidden="true"></span>
-      <strong id="dial-escena">Sin señal</strong>
-      <span id="dial-pista">Pulsa una escena para empezar</span>
+    <div class="dial-pie">
+      <div class="dial-texto">
+        <span class="piloto" aria-hidden="true"></span>
+        <strong id="dial-escena">Sin señal</strong>
+        <span id="dial-pista">Pulsa una escena para empezar</span>
+      </div>
+      <div class="saltos">
+        <button id="anterior" class="salto" title="Pista anterior (←)" aria-label="Pista anterior" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5 9 12l10 7z"/></svg></button>
+        <button id="siguiente" class="salto" title="Pista siguiente (→)" aria-label="Pista siguiente" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l10 7-10 7z"/></svg></button>
+      </div>
     </div>
   </div>
 
@@ -39,8 +45,8 @@
     <span class="reloj">Hora <b id="hora">--:--</b></span>
     <span class="reloj">Sesión <b id="sesion">00:00:00</b></span>
     <button id="fundir" class="boton">Fundir <kbd>Esc</kbd></button>
-    <button id="cortar" class="boton">Cortar <kbd>X</kbd></button>
-    <button id="pantalla" class="boton sec">Pantalla completa <kbd>F</kbd></button>
+    <button id="cortar" class="boton">Cortar <kbd>⌫</kbd></button>
+    <button id="pantalla" class="boton sec">Pantalla completa</button>
     <button id="abrir-manual" class="boton sec">Cómo funciona</button>
   </div>
 </header>
@@ -49,10 +55,28 @@
   <section class="bloque bloque-escenas" aria-labelledby="t-escenas">
     <div class="bloque-cabeza">
       <h2 id="t-escenas">Escenas</h2>
-      <p>Una suena cada vez y el cambio es un fundido. Cada una tiene cuatro intensidades, cada una con su lista; al volver, sigue por donde iba.</p>
+      <p>Suena una cada vez y el cambio es un fundido. Gira la perilla para subir la intensidad: cada nivel tiene su propia lista y, al volver, sigue por donde iba.</p>
       <label class="mando">Música <input id="v-musica" type="range" min="0" max="1" step="0.01" value="0.9"></label>
     </div>
     <div class="escenas" id="escenas"></div>
+  </section>
+
+  <section class="bloque bloque-golpes" aria-labelledby="t-golpes">
+    <div class="bloque-cabeza">
+      <h2 id="t-golpes">Golpes</h2>
+      <p>Suenan una vez, por encima de todo. Cada vez, una toma distinta.</p>
+      <label class="mando">Nivel <input id="v-golpes" type="range" min="0" max="1" step="0.01" value="0.9"></label>
+    </div>
+    <div class="grupos-golpes" id="golpes"></div>
+  </section>
+
+  <section class="bloque bloque-ambiente" aria-labelledby="t-ambiente">
+    <div class="bloque-cabeza">
+      <h2 id="t-ambiente">Ambiente</h2>
+      <p>Grabaciones reales en bucle, por debajo de la música. Se pueden sumar.</p>
+      <label class="mando">Nivel <input id="v-ambiente" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+    </div>
+    <div class="ambientes" id="ambientes"></div>
   </section>
 
   <section class="bloque bloque-gramofono" aria-labelledby="t-gramofono">
@@ -66,24 +90,6 @@
       <div class="plato" aria-hidden="true"><span></span></div>
       <ul class="discos" id="discos"></ul>
     </div>
-  </section>
-
-  <section class="bloque bloque-ambiente" aria-labelledby="t-ambiente">
-    <div class="bloque-cabeza">
-      <h2 id="t-ambiente">Ambiente</h2>
-      <p>Bucles que se suman por debajo de la música. Se generan en el navegador.</p>
-      <label class="mando">Nivel <input id="v-ambiente" type="range" min="0" max="1" step="0.01" value="0.7"></label>
-    </div>
-    <div class="ambientes" id="ambientes"></div>
-  </section>
-
-  <section class="bloque bloque-golpes" aria-labelledby="t-golpes">
-    <div class="bloque-cabeza">
-      <h2 id="t-golpes">Golpes</h2>
-      <p>Suenan una vez, por encima de todo.</p>
-      <label class="mando">Nivel <input id="v-golpes" type="range" min="0" max="1" step="0.01" value="0.9"></label>
-    </div>
-    <div class="golpes" id="golpes"></div>
   </section>
 
   <section class="bloque bloque-dados" aria-labelledby="t-dados">
@@ -122,26 +128,28 @@
 </main>
 
 <footer class="pie">
-  <p>Música de Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">Creative Commons BY 4.0</a>. <button id="abrir-creditos" class="enlace">Lista completa</button>. Ambientes y golpes sintetizados en el navegador.</p>
-  <p>Herramienta no oficial. <i>La llamada de Cthulhu</i> es una marca de Chaosium Inc.</a>.</p>
+  <p>Música de Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">Creative Commons BY 4.0</a>. Ambientes y golpes de <a href="https://freesound.org">Freesound</a>, de dominio público (CC0). <button id="abrir-creditos" class="enlace">Créditos completos</button>.</p>
+  <p>Herramienta no oficial. <i>La llamada de Cthulhu</i> es una marca de Chaosium Inc.</p>
   <p><a href="https://rpg.nephei.org">Aventuras en rpg.nephei.org</a> · <a href="https://nephei.org">nephei.org</a></p>
 </footer>
 
 <dialog id="manual">
   <h2>Cómo funciona</h2>
   <h3>Escenas</h3>
-  <p>Pulsa una escena y empieza su música. Sólo suena una a la vez y al cambiar se funden. Si vuelves a una escena, sigue por la pista y el segundo donde la dejaste, así que en una sesión larga no se repite nada.</p>
-  <p>Debajo de cada escena hay cuatro intensidades, de la más tranquila a la más intensa. Cada una tiene su propia lista y al pasar de una a otra la música se funde en unos segundos. Puedes elegir la intensidad antes de poner la escena. Para pausar, vuelve a pulsar la que suena.</p>
+  <p>Pulsa una escena y empieza su música. Solo suena una a la vez y al cambiar se funden. Si vuelves a una escena, sigue por la pista y el segundo donde la dejaste, así que en una sesión larga no se repite nada. Para pausar, vuelve a pulsar la que suena.</p>
+  <p>La perilla de cada escena elige entre cuatro intensidades, de la más tranquila a la más tensa. Arrástrala hacia arriba o hacia abajo, gírala con la rueda del ratón, haz clic para avanzar un nivel o pulsa directamente el nombre del nivel. Cada intensidad tiene su propia lista y el paso de una a otra es un fundido de unos segundos. Puedes dejarla preparada antes de poner la escena.</p>
+  <p>Los botones junto al dial pasan a la pista siguiente o vuelven a la anterior de la lista que suena.</p>
   <h3>Gramófono</h3>
   <p>Discos para la música que oyen los personajes: el cabaret, la fiesta, la radio de un café. Suena aparte de la escena, así que puedes dejar la inquietud por debajo. La bocina y el crujido imitan un gramófono de los años veinte; quítalos si prefieres el disco limpio.</p>
   <h3>Ambiente y golpes</h3>
-  <p>Los ambientes se suman entre sí y por debajo de la música, cada uno con su nivel. Los golpes suenan una vez, para un susto, un disparo o una campanada a medianoche.</p>
+  <p>Los ambientes son grabaciones reales que se repiten sin que se note la costura. Se suman entre sí y por debajo de la música, cada uno con su nivel.</p>
+  <p>Los golpes suenan una vez: un susto, un disparo, una campanada a medianoche. Casi todos tienen varias tomas y cada vez suena una distinta, para que tres disparos seguidos no suenen idénticos. Los largos, como los susurros o los pasos, se cortan si los vuelves a pulsar.</p>
   <h3>Teclado</h3>
   <ul class="teclas">
     <li><kbd>1</kbd>–<kbd>5</kbd> cambiar de escena, o pausar la que suena</li>
-    <li><kbd>↑</kbd> <kbd>↓</kbd> subir o bajar la intensidad</li>
-    <li><kbd>Q</kbd> <kbd>W</kbd> <kbd>E</kbd> <kbd>R</kbd> <kbd>T</kbd> <kbd>Y</kbd> los golpes, en orden</li>
-    <li><kbd>Esc</kbd> fundir todo a silencio en seis segundos · <kbd>X</kbd> cortar en seco · <kbd>F</kbd> pantalla completa</li>
+    <li><kbd>↑</kbd> <kbd>↓</kbd> subir o bajar la intensidad · <kbd>←</kbd> <kbd>→</kbd> pista anterior o siguiente</li>
+    <li>Golpes: <kbd>Q</kbd>–<kbd>Y</kbd> terror, <kbd>A</kbd>–<kbd>H</kbd> acción, <kbd>Z</kbd>–<kbd>N</kbd> la casa</li>
+    <li><kbd>Esc</kbd> fundir todo a silencio en seis segundos · <kbd>⌫</kbd> cortar en seco</li>
   </ul>
   <h3>Tiradas</h3>
   <p>Con la habilidad, el grado de éxito sale según la 7.ª edición: crítico con un 01, extremo con un quinto, difícil con la mitad. La pifia es 100, o de 96 a 100 si la habilidad es menor de 50. Los dados de bonificación o penalización añaden decenas y se queda la mejor o la peor.</p>
@@ -151,14 +159,18 @@
 </dialog>
 
 <dialog id="creditos">
-  <h2>Música</h2>
-  <p>Todas las pistas son de Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>) y se usan con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">Creative Commons: By Attribution 4.0</a>. Están recomprimidas a 96 kbps para que carguen deprisa.</p>
+  <h2>Créditos</h2>
+  <h3>Música</h3>
+  <p>Todas las pistas son de Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>) y se usan con licencia <a href="https://creativecommons.org/licenses/by/4.0/deed.es">Creative Commons: By Attribution 4.0</a>, tal como se publican.</p>
   <ul id="lista-creditos" class="creditos"></ul>
+  <h3>Ambientes y golpes</h3>
+  <p>Grabaciones de <a href="https://freesound.org">Freesound</a> que sus autores donaron al dominio público (<a href="https://creativecommons.org/publicdomain/zero/1.0/deed.es">CC0</a>). Recortadas y niveladas para la consola; el crujido del gramófono se genera en el navegador.</p>
+  <ul id="lista-efectos" class="creditos"></ul>
   <button class="boton cerrar">Cerrar</button>
 </dialog>
 
-<script src="/sintes.js?v=1"></script>
-<script src="/dados.js?v=1"></script>
-<script src="/consola.js?v=1"></script>
+<script src="/efectos.js?v=2"></script>
+<script src="/dados.js?v=2"></script>
+<script src="/consola.js?v=2"></script>
 </body>
 </html>
