@@ -107,10 +107,22 @@ class Reproductor {
   }
   cargar(clave, desde = 0) {
     this.clave = clave;
-    this.audio.src = `/musica/${clave}.mp3`;
-    this.audio.currentTime = desde;
-    const promesa = this.audio.play();
-    if (promesa) promesa.catch(() => {});
+    const turno = (this.turno = (this.turno || 0) + 1);
+    const url = `/musica/${clave}.mp3`;
+    const tocar = (src) => {
+      if (turno !== this.turno) return;
+      if (this.blob) URL.revokeObjectURL(this.blob);
+      this.blob = src.startsWith("blob:") ? src : null;
+      this.audio.src = src;
+      if (desde) this.audio.addEventListener("loadedmetadata", () => (this.audio.currentTime = desde), { once: true });
+      const promesa = this.audio.play();
+      if (promesa) promesa.catch(() => {});
+    };
+    // Los assets de Workers no atienden peticiones Range, así que el navegador no puede
+    // saltar a mitad de una pista servida por URL. Para reanudar, se toma el fichero entero
+    // (casi siempre ya está en la caché) como blob, que sí admite saltos.
+    if (desde > 0.5) fetch(url).then((r) => r.blob()).then((b) => tocar(URL.createObjectURL(b))).catch(() => tocar(url));
+    else tocar(url);
   }
   fundir(nivel, segundos = FUNDIDO) {
     const g = this.gain.gain;
