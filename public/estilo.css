@@ -312,6 +312,7 @@ input[type=range]{accent-color:var(--laton);width:7.5rem}
 /* Pie y diálogos */
 .pie{max-width:96rem;margin:0 auto;padding:1rem clamp(1rem,4vw,2.5rem) 2.5rem;color:var(--apagado);font-size:.95rem;border-top:1px solid var(--borde-suave)}
 .pie p{margin:.3rem 0}
+.pie__priv{font-size:.85rem}
 dialog{
   max-width:min(40rem,calc(100vw - 2rem));max-height:calc(100vh - 3rem);overflow:auto;
   border:1px solid var(--borde);border-radius:12px;padding:1.4rem 1.6rem;
